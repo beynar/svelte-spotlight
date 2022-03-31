@@ -1,0 +1,314 @@
+@import '@fontsource/fira-mono';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+	font-family: Arial, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
+		Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+	--font-mono: 'Fira Mono', monospace;
+	--pure-white: #ffffff;
+	--primary-color: #b9c6d2;
+	--secondary-color: #d0dde9;
+	--tertiary-color: #edf0f8;
+	--accent-color: #ff3e00;
+	--heading-color: rgba(0, 0, 0, 0.7);
+	--text-color: #444444;
+	--background-without-opacity: rgba(255, 255, 255, 0.7);
+	--column-width: 42rem;
+	--column-margin-top: 4rem;
+}
+
+html {
+	scroll-behavior: smooth;
+	scroll-padding-top: 100px;
+}
+body {
+	min-height: 100vh;
+	margin: 0;
+}
+
+body::before {
+	content: '';
+	width: 80vw;
+	height: 100vh;
+	position: absolute;
+	top: 0;
+	left: 10vw;
+	z-index: -1;
+
+	opacity: 0.05;
+}
+
+#svelte {
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+}
+
+h1,
+h2,
+p {
+	font-weight: 400;
+}
+
+p {
+	line-height: 1;
+}
+
+a {
+	text-decoration: none;
+}
+
+pre {
+	font-size: 16px;
+	font-family: var(--font-mono);
+	background-color: rgba(255, 255, 255, 0.45);
+	border-radius: 3px;
+	box-shadow: 2px 2px 6px rgb(255 255 255 / 25%);
+	padding: 0.5em;
+	overflow-x: auto;
+	color: var(--text-color);
+}
+
+input,
+button {
+	font-size: inherit;
+	font-family: inherit;
+}
+
+button:focus:not(:focus-visible) {
+	outline: none;
+}
+
+@media (min-width: 720px) {
+	h1 {
+		font-size: 2.4rem;
+	}
+}
+
+.sl-content.pokedex ul {
+	@apply grid grid-cols-2 lg:grid-cols-3;
+}
+
+.anatomy-part {
+	@apply rounded-lg border-[1px] border-dashed border-base-content p-3 w-full;
+}
+code.class {
+	@apply rounded-sm text-xs px-2 py-1 align-middle bg-secondary text-white;
+}
+
+code.props {
+	@apply rounded-sm text-xs px-2 py-1 align-middle bg-primary text-white;
+}
+code.props,
+code.class {
+	animation: fadeIn 200ms;
+}
+@keyframes fadeIn {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+
+h2 {
+	@apply text-5xl font-bold mt-20 mb-4 text-base-content;
+}
+
+h3 {
+	@apply text-3xl font-bold mt-10 mb-4;
+}
+
+code[class*='language-'],
+pre[class*='language-'] {
+	color: #9efeff;
+	direction: ltr;
+	text-align: left;
+	white-space: pre;
+	word-spacing: normal;
+	word-break: normal;
+
+	-moz-tab-size: 4;
+	-o-tab-size: 4;
+	tab-size: 4;
+
+	-webkit-hyphens: none;
+	-moz-hyphens: none;
+	-ms-hyphens: none;
+	hyphens: none;
+
+	font-family: 'Operator Mono', 'Fira Code', Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono',
+		monospace;
+	font-weight: 400;
+	font-size: 12px;
+	line-height: 20px;
+	letter-spacing: 0.5px;
+	text-shadow: 0 1px #222245;
+}
+
+pre[class*='language-']::-moz-selection,
+pre[class*='language-'] ::-moz-selection,
+code[class*='language-']::-moz-selection,
+code[class*='language-'] ::-moz-selection,
+pre[class*='language-']::selection,
+pre[class*='language-'] ::selection,
+code[class*='language-']::selection,
+code[class*='language-'] ::selection {
+	color: inherit;
+	background: #a599e9;
+}
+
+/* Code blocks. */
+pre[class*='language-'] {
+	padding: 2em;
+	margin: 0.5em 0;
+	overflow: auto;
+}
+
+:not(pre) > code[class*='language-'],
+pre[class*='language-'] {
+	background: #1e1e3f;
+}
+
+/* Inline code */
+:not(pre) > code[class*='language-'] {
+	padding: 0.1em;
+	border-radius: 0.3em;
+}
+
+.token {
+	font-weight: 400;
+}
+
+.token.comment,
+.token.prolog,
+.token.cdata {
+	color: #b362ff;
+}
+
+.token.delimiter,
+.token.keyword,
+.token.selector,
+.token.important,
+.token.atrule {
+	color: #ff9d00;
+}
+
+.token.operator,
+.token.attr-name {
+	color: rgb(255, 180, 84);
+}
+
+.token.punctuation {
+	color: #ffffff;
+}
+
+.token.boolean {
+	color: rgb(255, 98, 140);
+}
+
+.token.tag,
+.token.tag .punctuation,
+.token.doctype,
+.token.builtin {
+	color: rgb(255, 157, 0);
+}
+
+.token.entity,
+.token.symbol {
+	color: #6897bb;
+}
+
+.token.number {
+	color: #ff628c;
+}
+
+.token.property,
+.token.constant,
+.token.variable {
+	color: #ff628c;
+}
+
+.token.string,
+.token.char {
+	color: #a5ff90;
+}
+
+.token.attr-value,
+.token.attr-value .punctuation {
+	color: #a5c261;
+}
+
+.token.attr-value .punctuation:first-child {
+	color: #a9b7c6;
+}
+
+.token.url {
+	color: #287bde;
+	text-decoration: underline;
+}
+
+.token.function {
+	color: rgb(250, 208, 0);
+}
+
+.token.regex {
+	background: #364135;
+}
+
+.token.bold {
+	font-weight: bold;
+}
+
+.token.italic {
+	font-style: italic;
+}
+
+.token.inserted {
+	background: #00ff00;
+}
+
+.token.deleted {
+	background: #ff000d;
+}
+
+code.language-css .token.property,
+code.language-css .token.property + .token.punctuation {
+	color: #a9b7c6;
+}
+
+code.language-css .token.id {
+	color: #ffc66d;
+}
+
+code.language-css .token.selector > .token.class,
+code.language-css .token.selector > .token.attribute,
+code.language-css .token.selector > .token.pseudo-class,
+code.language-css .token.selector > .token.pseudo-element {
+	color: #ffc66d;
+}
+
+.token.class-name {
+	color: #fb94ff;
+}
+
+.token.operator,
+.token.entity,
+.token.url,
+.language-css .token.string,
+.style .token.string {
+	background: none;
+}
+
+.line-highlight.line-highlight {
+	margin-top: 36px;
+	background: linear-gradient(to right, rgba(179, 98, 255, 0.17), transparent);
+}
+
+.line-highlight.line-highlight:before,
+.line-highlight.line-highlight[data-end]:after {
+	content: '';
+}
