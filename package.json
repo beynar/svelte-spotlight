@@ -1,6 +1,7 @@
 {
   "scripts": {
     "dev:doc": "pnpm run dev --filter svelte-spotlight-documentation",
-    "package": "pnpm run package --filter svelte-spotlight"
+    "package": "pnpm run package --filter svelte-spotlight",
+    "build": "pnpm run build --filter svelte-spotlight-documentation"
   }
 }
