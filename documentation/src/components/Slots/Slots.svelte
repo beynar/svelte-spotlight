@@ -1,70 +1,111 @@
 <script>
-	const slots = [
+	import Table from '../Table.svelte';
+	const group = [
 		{
-			name: '',
-			description: '',
+			group: 'Default available slot props',
+			keys: ['description', 'type', 'defaultValue'],
+			props: [
+				{
+					name: 'selectedResult',
+					description:
+						'The current selected result either after hitting "Enter" or by clicking on it',
+					type: 'Result',
+					defaultValue: 'undefined'
+				},
+				{
+					name: 'preSelectedResult',
+					description: 'The current result that is preselected by the keyboard navigation',
+					type: 'Result',
+					defaultValue: 'undefined'
+				},
+				{
+					name: 'noResults',
+					description: 'If search results list is empty',
+					type: 'boolean',
+					defaultValue: 'false'
+				},
+				{
+					name: 'query',
+					description: 'The current value of the search input',
+					type: 'string',
+					defaultValue: "''"
+				}
+			]
+		},
+		{
+			group: 'headerLeft',
+			description: 'Use it to render a search icon or spinner to the left of the input.',
+			keys: [],
 			props: []
 		},
 		{
-			name: '',
-			description: '',
+			group: 'headerRight',
+			description: 'Use it to render a close icon or a clear query button.',
+			keys: [],
 			props: []
 		},
 		{
-			name: '',
-			description: '',
+			group: 'contentTop',
+			description:
+				'Render inside the result container but before the results list, you can use it to display a filtering menu.',
+			keys: [],
 			props: []
 		},
 		{
-			name: '',
-			description: '',
+			group: 'contentBottom',
+			description:
+				'Render inside the result container but after the results list, you can use it to display a load more button.',
+			keys: [],
 			props: []
 		},
 		{
-			name: '',
-			description: '',
+			group: 'emptySearch',
+			description:
+				'Render when query is empty, useful to display some hints. If not provided the results list is shown (or if no result, the noResults slot)',
+			keys: [],
 			props: []
 		},
 		{
-			name: '',
-			description: '',
+			group: 'noResults',
+			description: 'Render when results list is empty.',
+			keys: [],
 			props: []
 		},
 		{
-			name: '',
-			description: '',
+			group: 'groupHeader',
+			description: 'If results are grouped you can use this slot to provide segmentation infos.',
+			keys: [],
 			props: []
 		},
 		{
-			name: '',
-			description: '',
+			group: 'result',
+			description: 'Slot to display the result.',
+			keys: [],
+			props: []
+		},
+		{
+			group: 'sidePanel',
+			description:
+				'Side panel to render to the right of the results container. You can use it to render information about the current preselected result like Raycast does.',
+			keys: [],
+			props: []
+		},
+
+		{
+			group: 'footer',
+			description:
+				"Render to the bottom of the modal. You can display some hints here too or the famous 'Search by Algolia' button ",
+			keys: [],
+			props: []
+		},
+		{
+			group: 'trigger',
+			description: 'Slot to render a button that trigger the modal to open.',
+			keys: [],
 			props: []
 		}
 	];
 </script>
 
 <h2 id="slots">Slots</h2>
-
-<div class="overflow-x-auto">
-	<table class="table table-zebra text-sm  w-full">
-		<!-- head -->
-		<thead>
-			<tr>
-				<th>Prop</th>
-				<th>Description</th>
-				<th>Type</th>
-				<th>Default</th>
-			</tr>
-		</thead>
-		<tbody>
-			{#each slots as { name }}
-				<tr>
-					<td>{name}</td>
-					<!-- <td>{description}</td>
-						<td>{type}</td>
-						<td>{defaultValue}</td> -->
-				</tr>
-			{/each}
-		</tbody>
-	</table>
-</div>
+<Table {group} />
