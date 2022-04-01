@@ -12,7 +12,7 @@
 		"lint": "prettier --ignore-path .gitignore --check --plugin-search-dir=. . && eslint --ignore-path .gitignore .",
 		"format": "prettier --ignore-path .gitignore --write --plugin-search-dir=. ."
 	},
-	"devDependencies": {
+	"dependencies": {
 		"svelte-spotlight": "workspace:*",
 		"@algolia/client-search": "^4.13.0",
 		"@fontsource/fira-mono": "^4.5.4",
