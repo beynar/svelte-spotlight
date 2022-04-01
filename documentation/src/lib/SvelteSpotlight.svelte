@@ -32,22 +32,25 @@
 
 	let input: HTMLInputElement;
 	let content: HTMLDivElement;
-	let clientHeight: number = 0;
-	let headerHeight: number = 0;
-	let footerHeight: number = 0;
+	let clientHeight = 0;
+	let headerHeight = 0;
+	let footerHeight = 0;
 
 	/** The keyboard combo that will open the spotlight */
 	export let combo: Combo = { key: 'k', metaKey: true };
 	/** Max search input length */
-	export let maxLength: number = 50;
+	export let maxLength = 50;
+	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 	// @ts-ignore
 	export let overlayTransition: OverlayTransition = fade;
 	export let overlayTransitionConfig: AnimationConfig<OverlayTransition> = { duration: 200 };
+	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 	//@ts-ignore
 	export let modalTransitionIn: ModalInTransition = scale;
 	export let modalTransitionInConfig: AnimationConfig<ModalInTransition> = {
 		start: 0.95
 	};
+	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 	//@ts-ignore
 	export let modalTransitionOut: ModalOutTransition = scale;
 	export let modalTransitionOutConfig: AnimationConfig<ModalOutTransition> = {
@@ -66,11 +69,11 @@
 		? ConditionalKeys<R, string | number>
 		: ConditionalKeys<GroupedResult, string | number>;
 	/** Whether to clean query on close. This option also clean the preselected result and the selected result */
-	export let cleanQueryOnClose: boolean = false;
+	export let cleanQueryOnClose = false;
 	/** The top distance where the spotlight will be fixed */
-	export let distanceFromTop: number = 100;
+	export let distanceFromTop = 100;
 	/** The input placeholder */
-	export let searchPlaceholder: string = 'Search';
+	export let searchPlaceholder = 'Search';
 	/** The current value of the search input  */
 	export let query = '';
 	/** The current result that is preselected by the keyboard navigation  */
@@ -78,22 +81,22 @@
 	/** The current selected result either after hitting "Enter" or by clicking on it */
 	export let selectedResult = undefined;
 	/** Whether the search input is focused */
-	export let isFocused: boolean = false;
+	export let isFocused = false;
 
 	/** The overlay class */
-	export let overlayClass: string = '';
+	export let overlayClass = '';
 	/** The modal class */
-	export let modalClass: string = '';
+	export let modalClass = '';
 	/** The modal header class */
-	export let headerClass: string = '';
+	export let headerClass = '';
 	/** The input class */
 	/** The modal content container class */
-	export let inputClass: string = '';
-	export let contentClass: string = '';
+	export let inputClass = '';
+	export let contentClass = '';
 	/** The modal results container class */
-	export let resultsClass: string = '';
+	export let resultsClass = '';
 	/** The modal footer class */
-	export let footerClass: string = '';
+	export let footerClass = '';
 
 	/** Optional header center component to replace the default input. We don't use a slot here because it's impossible to define a conditional slot, and  you don't want to display this component all the time. It's useful if you want to simulate some sort of navigation inside the spotlight component */
 	export let headerCenterComponent: any = undefined;

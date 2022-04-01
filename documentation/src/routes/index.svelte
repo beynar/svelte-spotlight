@@ -6,7 +6,7 @@
 
 	// export const prerender = true;
 	const copy = (e) => {
-		const text = e.target.textContent;
+		const text = e.target.getAttribute('aria-label');
 		navigator.clipboard.writeText(text).then(() => {
 			const minWidth = e.target.clientWidth;
 			e.target.style.width = `${minWidth}px`;
@@ -23,9 +23,15 @@
 	<h1 id="installation" class="text-6xl font-bold mt-20">Svelte-spotlight</h1>
 	<p class="mt-5 font-bold text-2xl">Headless spotlight component for Svelte</p>
 	<p class="mb-5 font-bold text-2xl">Build your site global search box in minutes</p>
-	<div on:click={copy} class="snippet">npm i svelte-spotlight</div>
-	<div on:click={copy} class="snippet">pnpm add svelte-spotlight</div>
-	<div on:click={copy} class="snippet   ">yarn add svelte-spotlight</div>
+	<div on:click={copy} class="snippet" aria-label="npm i svelte-spotlight">
+		npm i svelte-spotlight
+	</div>
+	<div on:click={copy} class="snippet" aria-label="pnpm add svelte-spotlight">
+		pnpm add svelte-spotlight
+	</div>
+	<div on:click={copy} class="snippet" aria-label="yarn add svelte-spotlight">
+		yarn add svelte-spotlight
+	</div>
 	<ul class="mt-5 p-4">
 		<li>Bring your own style, completely headless. Svelte-spotlight only handle the layout.</li>
 		<li>Search method agnostic, local or asynchronous.</li>

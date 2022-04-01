@@ -1,4 +1,15 @@
-import type { fade, fly, scale, blur, slide } from 'svelte/transition';
+import type {
+	fade,
+	fly,
+	scale,
+	blur,
+	slide,
+	BlurParams,
+	CrossfadeParams,
+	FadeParams,
+	ScaleParams,
+	SlideParams
+} from 'svelte/transition';
 import type { RequireExactlyOne } from 'type-fest';
 
 export type Fade = typeof fade;
@@ -9,7 +20,7 @@ export type Slide = typeof slide;
 
 export type AnimationFunctions = Fade | Fly | Scale | Blur | Slide;
 export type AnimationConfig<T extends AnimationFunctions> = Parameters<T>[1];
-
+export type AnimatingParams = FadeParams & ScaleParams & CrossfadeParams & SlideParams & BlurParams;
 export const scrollIntoViewIfNeeded = (target: HTMLLIElement, container: HTMLDivElement) => {
 	const top = target.offsetTop - container.offsetTop;
 	if (

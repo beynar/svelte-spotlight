@@ -1,5 +1,5 @@
 <script lang="ts">
-	import SvelteSpotlight from '$lib/SvelteSpotlight.svelte';
+	import SvelteSpotlight from 'svelte-spotlight/src/lib/SvelteSpotlight.svelte';
 	import { matchSorter } from 'match-sorter';
 	export let isOpen;
 	let query = '';

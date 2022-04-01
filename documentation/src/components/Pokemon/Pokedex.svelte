@@ -1,5 +1,5 @@
 <script lang="ts">
-	import SvelteSpotlight from '$lib/SvelteSpotlight.svelte';
+	import SvelteSpotlight from 'svelte-spotlight/src/lib/SvelteSpotlight.svelte';
 	import algoliasearch from 'algoliasearch/dist/algoliasearch-lite.esm.browser';
 	import { onMount } from 'svelte';
 	import PokemonItem from './PokemonItem.svelte';
@@ -17,7 +17,10 @@
 	let client;
 
 	let query = '';
-	let results: ({ index: string; hits: { name: string; objectID: string }[] } & {})[] = [];
+	let results: ({ index: string; hits: { name: string; objectID: string }[] } & Record<
+		string,
+		any
+	>)[] = [];
 	const indices = [
 		'Generation I',
 		'Generation II',
