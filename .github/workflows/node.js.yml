@@ -28,5 +28,4 @@ jobs:
       with:
         version: "6.32.3"
     - run: pnpm install    
-    - run: cd svelte-spotlight
-    - run: pnpm run lint
+    - run: cd svelte-spotlight && pnpm run lint
