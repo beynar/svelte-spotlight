@@ -27,5 +27,5 @@ jobs:
       uses: pnpm/action-setup@v2.2.1  
       with:
         version: "6.32.3"
-    - run: pnpm install    
+    - run: pnpm install --no-frozen-lockfile
     - run: cd svelte-spotlight && pnpm run lint
