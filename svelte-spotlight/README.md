@@ -1,40 +1,25 @@
-# create-svelte
+# svelte-spotlight ![svelte-themes minzip package size](https://img.shields.io/bundlephobia/minzip/svelte-spotlight) ![Version](https://img.shields.io/npm/v/svelte-spotlight.svg?colorB=green)
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+Headless spotlight component for Svelte
 
-## Creating a project
-
-If you're seeing this, you've probably already done this step. Congrats!
+Build your site global search box in minutes
 
 ```bash
-# create a new project in the current directory
-npm init svelte@next
+ pnpm add svelte-spotlight
 
-# create a new project in my-app
-npm init svelte@next my-app
+ npm install svelte-spotlight
+
+ yarn add svelte-spotlight
 ```
 
-> Note: the `@next` is temporary
+- ✅ Bring your own style, completely headless. Svelte-spotlight only handle the layout.
+- ✅ Search method agnostic, local or asynchronous.
+- ✅ Data agnostic, render flat lists or grouped results. Integrate perfectly with Algolia
+- ✅ multi-index search.
+- ✅ Great DX with full TS support
+- ✅ 9 slots to customize every part you need
+- ✅ Animate it as you wish
+- ✅ Keyboard shortcut and navigation
+- ✅ Accessible
 
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-## Building
-
-To create a production version of your app:
-
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+# [DOCUMENTATION & EXAMPLES](https://svelte-spotlight.vercel.app)

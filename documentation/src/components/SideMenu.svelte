@@ -1,9 +1,10 @@
 <script lang="ts">
 	import { fly } from 'svelte/transition';
 	import TiThMenu from 'svelte-icons/ti/TiThMenu.svelte';
-	import StickyBottom from './StickyBottom.svelte';
-	import TiPlus from 'svelte-icons/ti/TiPlus.svelte';
 	let isOpen = false;
+	export let isAlgoliaExampleOpen;
+	export let isSimpleExampleOpen;
+	import Navigation from './Navigation.svelte';
 	const toggle = () => (isOpen = !isOpen);
 </script>
 
@@ -26,27 +27,9 @@
 		<nav
 			in:fly={{ x: -300 }}
 			out:fly={{ x: -300 }}
-			class="fixed z-50 left-0 top-0 h-screen z-50 min-h-screen w-[300px] bg-white max-w-[100vw] overflow-y-auto flex flex-col justify-between"
+			class="fixed z-50 left-0 top-0 h-screen z-50 min-h-screen w-[300px] bg-base-100 max-w-[100vw] overflow-y-auto flex flex-col justify-between"
 		>
-			<div>
-				<div class="flex items-center px-4 justify-between py-2 ">
-					<h4 class="text-xl font-bold">Svelte-spotlight</h4>
-					<button on:click={toggle} class="w-[50px] h-[50px] p-3 ghostButton">
-						<div class="rotate-45">
-							<TiPlus title="close" width={20} />
-						</div>
-					</button>
-				</div>
-				<hr />
-				<div class="px-2 flex flex-col py-2">
-					<a href="/" class="ghostButton py-3 px-2"> 🏠 Inicio </a>
-					<a href="/products/fundas" class="ghostButton py-3 px-2"> 🪑 Funda </a>
-					<a href="/products/cruz" class="ghostButton py-3 px-2"> ✝︎ Cruz </a>
-					<a href="/pages/contact" class="ghostButton py-3 px-2"> 💌 Contacto </a>
-				</div>
-
-				<StickyBottom />
-			</div>
+			<Navigation bind:isAlgoliaExampleOpen bind:isSimpleExampleOpen />
 		</nav>
 	{/if}
 {/key}

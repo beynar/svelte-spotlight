@@ -35,8 +35,11 @@
 		{
 			group: 'headerLeft',
 			description: 'Use it to render a search icon or spinner to the left of the input.',
-			keys: [],
-			props: []
+			keys: ['type'],
+			props: [
+				{ name: 'group', type: 'R' },
+				{ name: 'groupIndex', type: 'number' }
+			]
 		},
 		{
 			group: 'headerRight',
@@ -80,15 +83,19 @@
 		{
 			group: 'result',
 			description: 'Slot to display the result.',
-			keys: [],
-			props: []
+			keys: ['type'],
+			props: [
+				{ name: 'result', type: 'Result' },
+				{ name: 'selected', type: 'boolean' },
+				{ name: 'index', type: 'number' }
+			]
 		},
 		{
 			group: 'sidePanel',
 			description:
 				'Side panel to render to the right of the results container. You can use it to render information about the current preselected result like Raycast does.',
-			keys: [],
-			props: []
+			keys: ['type'],
+			props: [{ name: 'maxHeight', type: 'number' }]
 		},
 
 		{
@@ -101,8 +108,8 @@
 		{
 			group: 'trigger',
 			description: 'Slot to render a button that trigger the modal to open.',
-			keys: [],
-			props: []
+			keys: ['type', 'descrition'],
+			props: [{ name: 'toggle', type: '() => void', description: 'Open the spotlight.' }]
 		}
 	];
 </script>

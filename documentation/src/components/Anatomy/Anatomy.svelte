@@ -3,7 +3,7 @@
 	import Slots from './Slots.svelte';
 	import Classes from './Classes.svelte';
 	import DynamicSlots from './DynamicSlots.svelte';
-	let tabs = [
+	const tabs = [
 		{
 			id: 'strucutre',
 			tab: 'Strucutre',

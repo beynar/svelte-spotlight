@@ -47,15 +47,16 @@
 		isOpen = false;
 	}}
 >
-	<div slot="result" let:selected let:result>
-		<div
-			class={`  hover:bg-base-200  cursor-pointer text-sm px-10 py-3 w-full ${
-				selected ? 'bg-base-300' : ''
-			} `}
-		>
-			{result.title}
-			<p class="text-slate-500 text-sm">{result.description}</p>
-		</div>
+	<div
+		slot="result"
+		let:selected
+		let:result
+		class={`hover:bg-base-200  cursor-pointer text-sm px-10 py-3 w-full ${
+			selected ? 'bg-base-300' : ''
+		} `}
+	>
+		{result.title}
+		<p class="text-slate-500 text-sm">{result.description}</p>
 	</div>
 
 	<div slot="noResults" class="px-10 py-3">
