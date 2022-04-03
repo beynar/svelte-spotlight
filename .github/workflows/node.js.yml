@@ -24,7 +24,9 @@ jobs:
     steps:    
     - uses: actions/checkout@v3
     - name: Setup PNPM
-      uses: pnpm/action-setup@v2.2.1       
+      uses: pnpm/action-setup@v2.2.1  
+      with:
+        version: "6.32.3"
     - run: pnpm install    
     - run: cd svelte-spotlight
     - run: npm run lint
