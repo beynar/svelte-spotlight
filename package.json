@@ -2,6 +2,9 @@
   "scripts": {
     "dev:doc": "pnpm run dev --filter svelte-spotlight-documentation",
     "package": "pnpm run package --filter svelte-spotlight",
-    "build": "pnpm run build --filter svelte-spotlight-documentation"
+    "publish": "cd svelte-spotlight/package && npm publish",
+    "build": "pnpm run build --filter svelte-spotlight-documentation",
+    "copy:readme": "cp ./svelte-spotlight/README.md README.md",
+    "deploy": "vercel --prod"
   }
 }

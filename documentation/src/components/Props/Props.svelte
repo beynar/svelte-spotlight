@@ -81,6 +81,18 @@
 					description: 'Whether the search input is focused',
 					type: 'boolean',
 					defaultValue: 'false'
+				},
+				{
+					name: 'listElement',
+					description: ' HTML element type for the the result list',
+					type: 'string',
+					defaultValue: 'ul'
+				},
+				{
+					name: 'resultElement',
+					description: 'HTML element type for the result element',
+					type: 'string',
+					defaultValue: 'li'
 				}
 			]
 		},

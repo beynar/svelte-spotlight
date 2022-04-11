@@ -29,6 +29,7 @@
 			component: DynamicSlots
 		}
 	];
+
 	let currentTab = tabs[0];
 </script>
 

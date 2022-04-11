@@ -1,5 +1,5 @@
 export const tailwind = `<script lang="ts">
-import SvelteSpotlight from 'svelte-spotlight';
+import SvelteSpotlight from 'svelte-spotlight/SvelteSpotlight.svelte';
 import { matchSorter } from 'match-sorter';
 let query = "";
 let items = [
@@ -44,7 +44,7 @@ $: results = matchSorter(items, query, { keys: ['title'] });
     </div>
 </SvelteSpotlight>`;
 export const css = `<script lang="ts">
-import SvelteSpotlight from 'svelte-spotlight';
+import SvelteSpotlight from 'svelte-spotlight/SvelteSpotlight.svelte';
 import { matchSorter } from 'match-sorter';
 let query = "";
 let items = [
@@ -87,51 +87,61 @@ $: results = matchSorter(items, query, { keys: ['title'] });
 </SvelteSpotlight>
 
 <style>
-	.result {
-		cursor: pointer;
-		font-size: 14px;
-		padding-left: 2.5rem;
-		padding-right: 2.5rem;
-		padding-top: 0.75rem;
-		padding-bottom: 0.75rem;
-		width: 100%;
-		color: black;
-	}
-    .noResults,
-	.result p {
-		color: gray;
-		font-size: 12px;
-	}
-	.result:hover,
-	.result[data-selected='true'] {
-		background: whitesmoke;
-	}
-    .noResults{
-        padding-left: 2.5rem;
-		padding-right: 2.5rem;
-		padding-top: 0.75rem;
-		padding-bottom: 0.75rem;
-    }
-	:global(.sl-modal) {
-		width: 600px;
-		max-width: 95%;
-		background: white;
-		box-shadow: 0 0 #0000, 0 0 #0000, 0 10px 15px -3px rgb(0 0 0 / 0.1),
-			0 4px 6px -4px rgb(0 0 0 / 0.1);
-		border-radius: 0.1rem;
-	}
+  .result {
+    cursor: pointer;
+    font-size: 14px;
+    width: 100%;
+    color: black;
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+  }
+  .noResults,
+  .result p {
+    color: gray;
+    font-size: 12px;
+  }
+  .result:hover,
+  .result[data-selected="true"] {
+    background: whitesmoke;
+  }
+  .noResults {
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+  }
+  :global(.sl-modal) {
+    width: 600px;
+    max-width: 95%;
+    background: white;
+    box-shadow: 0 0 #0000, 0 0 #0000, 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    border-radius: 0.1rem;
+  }
 
-	:global(.sl-header) {
-		padding-left: 2.5rem;
-		padding-right: 2.5rem;
-		padding-top: 0.75rem;
-		padding-bottom: 0.75rem;
-		border-bottom: 2px whitesmoke solid;
-	}
+  :global(.sl-results-item) {
+    display: flex;
+  }
 
-	:global(.sl-input) {
-		outline: none;
-		background: transparent;
-		color: #000000;
-	}
+  :global(.sl-results-list) {
+    padding: 0px !important;
+    margin: 0px !important;
+  }
+
+  :global(.sl-header) {
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px whitesmoke solid;
+  }
+
+  :global(.sl-input) {
+    outline: none;
+    background: transparent;
+    color: #000000;
+    border: none;
+    padding: 10px 20px;
+  }
 </style>`;

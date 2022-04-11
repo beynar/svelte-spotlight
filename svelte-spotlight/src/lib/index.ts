@@ -72,8 +72,8 @@ export type Slots<R, Result> = {
 export type Combo =
 	| (RequireExactlyOne<
 			{
-				metaKey?: true;
-				ctrlKey?: true;
+				metaKey?: boolean;
+				ctrlKey?: boolean;
 			},
 			'ctrlKey' | 'metaKey'
 	  > & { key: string })

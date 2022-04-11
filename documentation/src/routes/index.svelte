@@ -43,7 +43,8 @@
 		<li>9 slots to customize every part you need</li>
 		<li>Animate it as you wish</li>
 		<li>Keyboard shortcut and navigation</li>
-		<li>Accessible (kind of)</li>
+		<li>Accessible (but can be better)</li>
+		<li>No dependencies</li>
 	</ul>
 	<Anatomy />
 	<Props />

@@ -19,13 +19,17 @@
 			<code class="class">.sl-content</code> <code class="props">contentClass</code>
 		</div>
 		<div class="anatomy-part col-span-8 opacity-40">Content top</div>
-		<div class="anatomy-part col-span-5   ">
+		<div class="anatomy-part col-span-5">
 			<div>
 				<code class="class">.sl-results</code>
 				<code class="props">resultsClass</code>
 			</div>
-			<div class="anatomy-part mt-3 opacity-40 ">Group header</div>
-			<div class="anatomy-part mt-3 opacity-40 ">Result</div>
+
+			<div class="anatomy-part mt-3">
+				<div><code class="class">.sl-results-list</code></div>
+				<div class="anatomy-part mt-3 opacity-40 ">Group header</div>
+				<div class="anatomy-part mt-3"><code class="class">.sl-results-item</code></div>
+			</div>
 		</div>
 		<div class="anatomy-part col-span-3 opacity-40  ">Side panel</div>
 		<div class="anatomy-part col-span-8 opacity-40 ">Content bottom</div>

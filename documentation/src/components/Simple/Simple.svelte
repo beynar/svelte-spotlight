@@ -1,6 +1,8 @@
 <script lang="ts">
 	import SvelteSpotlight from 'svelte-spotlight/src/lib/SvelteSpotlight.svelte';
 	import { matchSorter } from 'match-sorter';
+	import { browser } from '$app/env';
+
 	export let isOpen;
 	let query = '';
 	let items = [
@@ -36,9 +38,11 @@
 <SvelteSpotlight
 	{results}
 	bind:query
-	combo={{ key: 'l', metaKey: true }}
+	combo={browser && !/mac/i.test(navigator.platform)
+		? { key: 'l', ctrlKey: true }
+		: { key: 'l', metaKey: true }}
 	bind:isOpen
-	modalClass={'w-[600px]  max-w-[95%] bg-base-100 shadow-lg overflow-hidden rounded-sm'}
+	modalClass={'w-[600px] max-w-[95%] bg-base-100 shadow-lg overflow-hidden rounded-sm'}
 	headerClass={'py-3 px-10 border-b-2 border-base-300 border-b-solid'}
 	inputClass="focus:outline-none bg-transparent"
 	resultIdKey="title"

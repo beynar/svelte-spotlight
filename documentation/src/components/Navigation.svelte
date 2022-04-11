@@ -4,6 +4,8 @@
 	export let isAlgoliaExampleOpen;
 	export let isSimpleExampleOpen;
 	const links = ['Installation', 'Anatomy', 'Props', 'Slots', 'Example'];
+	import { browser } from '$app/env';
+	$: isMac = browser && /mac/i.test(navigator.platform);
 </script>
 
 <div class="flex-1 flex flex-col">
@@ -25,7 +27,7 @@
 			class="btn btn-outline btn-accent mt-5"
 			on:click={() => (isAlgoliaExampleOpen = !isAlgoliaExampleOpen)}
 		>
-			Open complex Algolia example (⌘ + k)
+			Open complex Algolia example ({!isMac ? 'ctrl' : '⌘'} + k)
 		</button>
 	</div>
 	<div class="px-4">
@@ -33,7 +35,7 @@
 			class="btn btn-outline  btn-secondary mt-5"
 			on:click={() => (isSimpleExampleOpen = !isSimpleExampleOpen)}
 		>
-			Open basic documentation example (⌘ + j)
+			Open basic documentation example ({!isMac ? 'ctrl' : '⌘'} + j)
 		</button>
 	</div>
 </div>

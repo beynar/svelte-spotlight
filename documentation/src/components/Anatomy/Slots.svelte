@@ -17,9 +17,13 @@
 			<code class="props">contentTop</code>
 		</div>
 		<div class="anatomy-part col-span-5  ">
-			<div class="opacity-40">Results / Groups</div>
-			<div class="anatomy-part mt-3"><code class="props">groupHeader</code></div>
-			<div class="anatomy-part mt-3"><code class="props">result</code></div>
+			<div class="opacity-40">Results</div>
+
+			<div class="anatomy-part mt-3">
+				<div class="opacity-40">Group</div>
+				<div class="anatomy-part mt-3"><code class="props">groupHeader</code></div>
+				<div class="anatomy-part mt-3"><code class="props">result</code></div>
+			</div>
 		</div>
 		<div class="anatomy-part col-span-3"><code class="props">sidePanel</code></div>
 		<div class="anatomy-part col-span-8 ">

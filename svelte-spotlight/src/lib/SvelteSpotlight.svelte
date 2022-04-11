@@ -17,10 +17,11 @@
 	type ModalOutTransition = $$Generic<AnimationFunctions>;
 	type R = $$Generic<Record<string, any>>;
 	type GK = $$Generic<ConditionalKeys<R, any[]>>;
-	type GroupedResult = R[GK][0];
+	type GroupedResult = R[GK][number];
 	type Result = GroupedResult extends string ? R : GroupedResult;
 
 	type $$Slots = Slots<R, Result>;
+
 	const dispatch = createEventDispatcher<{
 		/** Event fired when a result is either clicked or selected with the Enter key. Return the selected item */
 		select: Result;
@@ -37,7 +38,11 @@
 	let footerHeight = 0;
 
 	/** The keyboard combo that will open the spotlight */
-	export let combo: Combo = { key: 'k', metaKey: true };
+	export let combo: Combo =
+		browser && !/mac/i.test(navigator.platform)
+			? { key: 'k', ctrlKey: true }
+			: { key: 'k', metaKey: true };
+
 	/** Max search input length */
 	export let maxLength = 50;
 	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -82,7 +87,6 @@
 	export let selectedResult = undefined;
 	/** Whether the search input is focused */
 	export let isFocused = false;
-
 	/** The overlay class */
 	export let overlayClass = '';
 	/** The modal class */
@@ -97,7 +101,10 @@
 	export let resultsClass = '';
 	/** The modal footer class */
 	export let footerClass = '';
-
+	/** HTML element type for the the result list */
+	export let listElement = 'ul';
+	/** HTML element type for the result element */
+	export let resultElement = 'li';
 	/** Optional header center component to replace the default input. We don't use a slot here because it's impossible to define a conditional slot, and  you don't want to display this component all the time. It's useful if you want to simulate some sort of navigation inside the spotlight component */
 	export let headerCenterComponent: any = undefined;
 	/** Optional content component to replace the default result list. We don't use a slot here because it's impossible to define a conditional slot, and  you don't want to display this component all the time. It's useful if you want to simulate some sort of navigation inside the spotlight component */
@@ -124,13 +131,13 @@
 
 	const onKeyDown = (e: KeyboardEvent) => {
 		if (isOpen && e.key === 'Escape') {
-			e.preventDefault();
 			isOpen = false;
+			return e.preventDefault();
 		} else if (isCombo(e, combo)) {
-			e.preventDefault();
 			isOpen = true;
+			return e.preventDefault();
 		}
-		if (!noResults && isOpen) {
+		if (!noResults && isOpen && content) {
 			const options = Array.from(content.querySelectorAll('li'));
 			const current = options.findIndex(
 				(element) => element.id === preSelectedResult?.[resultIdKey]
@@ -180,14 +187,16 @@
 		// TODO add some attribute for better a11y
 		role: 'listbox',
 		'aria-labelledby': 'sv-sl',
-		id
+		id,
+		class: 'sl-results-list'
 	});
 	const optionProps = (id, selected) => ({
 		// TODO add some attribute for better a11y
 		'aria-labelledby': 'sv-sl',
 		role: 'option',
 		'aria-selected': selected,
-		id
+		id,
+		class: 'sl-results-item'
 	});
 
 	$: defaultProps = {
@@ -272,31 +281,33 @@
 									{@const groupedResults = group[groupResultsKey]}
 									{#if groupedResults.length}
 										<slot name="groupHeader" {...defaultProps} {group} {groupIndex} />
-										<ul {...listProps(group[groupIdKey])}>
+										<svelte:element this={listElement} {...listProps(group[groupIdKey])}>
 											{#each groupedResults as result, index (result[resultIdKey])}
 												{@const selected = preSelectedResult?.[resultIdKey] === result[resultIdKey]}
-												<li
+												<svelte:element
+													this={resultElement}
 													{...optionProps(result[resultIdKey], selected)}
 													on:click={() => select(result)}
 												>
 													<slot name="result" {...defaultProps} {result} {index} {selected} />
-												</li>
+												</svelte:element>
 											{/each}
-										</ul>
+										</svelte:element>
 									{/if}
 								{/each}
 							{:else}
-								<ul {...listProps()}>
+								<svelte:element this={listElement} {...listProps()}>
 									{#each results as result, index (result[resultIdKey])}
 										{@const selected = preSelectedResult?.[resultIdKey] === result[resultIdKey]}
-										<li
+										<svelte:element
+											this={resultElement}
 											{...optionProps(result[resultIdKey], selected)}
 											on:click={() => select(result)}
 										>
 											<slot name="result" {...defaultProps} {result} {index} {selected} />
-										</li>
+										</svelte:element>
 									{/each}
-								</ul>
+								</svelte:element>
 							{/if}
 						{/if}
 						<slot name="contentBottom" {...defaultProps} />
