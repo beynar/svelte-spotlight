@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { fade, scale } from 'svelte/transition';
-	import { browser } from '$app/env';
+	import { browser } from '$app/environment';
 	import {
 		type AnimationFunctions,
 		type AnimationConfig,
@@ -66,9 +66,9 @@
 	/** A flat array of result or a one level deep array of grouped results */
 	export let results: R[] = [];
 	/** If the results are grouped, you want to define the key of the nested results */
-	export let groupResultsKey: GK = undefined;
+	export let groupResultsKey: GK | undefined = undefined;
 	/** The key to find the ID of a group in order to keyed the each loop */
-	export let groupIdKey: ConditionalKeys<R, string | number> = undefined;
+	export let groupIdKey: ConditionalKeys<R, string | number> | undefined = undefined;
 	/** The key to find the ID of a result in order to keyed the each loop */
 	export let resultIdKey: GroupedResult extends string
 		? ConditionalKeys<R, string | number>
@@ -82,9 +82,9 @@
 	/** The current value of the search input  */
 	export let query = '';
 	/** The current result that is preselected by the keyboard navigation  */
-	export let preSelectedResult = undefined;
+	export let preSelectedResult: Result | undefined = undefined;
 	/** The current selected result either after hitting "Enter" or by clicking on it */
-	export let selectedResult = undefined;
+	export let selectedResult: Result | undefined = undefined;
 	/** Whether the search input is focused */
 	export let isFocused = false;
 	/** The overlay class */
@@ -144,11 +144,17 @@
 			);
 			const selectResult = (position: number) => {
 				const element = options[position];
+
 				if (groupIdKey) {
-					const group = results.find((group) => group[groupIdKey] === element.parentElement.id);
-					preSelectedResult = group[groupResultsKey].find(
-						(result) => result[resultIdKey] === element.id
-					);
+					const group = results.find((group) => {
+						// @ts-ignore
+						return group[groupIdKey] === element?.parentElement?.id;
+					});
+					if (group && groupResultsKey) {
+						preSelectedResult = group[groupResultsKey].find(
+							(result: GroupedResult) => result[resultIdKey] === element.id
+						);
+					}
 				} else {
 					preSelectedResult = results[position];
 				}
@@ -170,14 +176,14 @@
 		}
 	};
 
-	const select = (item) => {
+	const select = (item: R) => {
 		selectedResult = item;
 		dispatch('select', item);
 	};
 
 	$: maxHeight = clientHeight - distanceFromTop * 2 - headerHeight - footerHeight;
 	$: noResults = groupResultsKey
-		? results.every((result) => result[groupResultsKey].length === 0)
+		? results.every((result) => groupResultsKey && result[groupResultsKey].length === 0)
 		: results.length === 0;
 
 	$: dispatch('query', query);
@@ -190,7 +196,7 @@
 		id,
 		class: 'sl-results-list'
 	});
-	const optionProps = (id, selected) => ({
+	const optionProps = (id: string, selected: boolean) => ({
 		// TODO add some attribute for better a11y
 		'aria-labelledby': 'sv-sl',
 		role: 'option',
@@ -245,8 +251,8 @@
 						autocorrect="off"
 						autocapitalize="off"
 						spellcheck="false"
-						onFocus={setFocus}
-						onBlur={resetFocus}
+						on:focus={setFocus}
+						on:blur={resetFocus}
 						type="text"
 						bind:value={query}
 						bind:this={input}
@@ -276,7 +282,7 @@
 						{:else if noResults}
 							<slot name="noResults" {...defaultProps} />
 						{:else if !noResults}
-							{#if groupResultsKey}
+							{#if groupResultsKey && groupIdKey}
 								{#each results as group, groupIndex (group[groupIdKey])}
 									{@const groupedResults = group[groupResultsKey]}
 									{#if groupedResults.length}

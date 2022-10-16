@@ -1,10 +1,10 @@
-<script>
+<script lang="ts">
 	import ThemeSwitch from '../components/ThemeSwitch.svelte';
 	import StickyBottom from '../components/StickyBottom.svelte';
-	export let isAlgoliaExampleOpen;
-	export let isSimpleExampleOpen;
+	export let isAlgoliaExampleOpen: boolean;
+	export let isSimpleExampleOpen: boolean;
 	const links = ['Installation', 'Anatomy', 'Props', 'Slots', 'Example'];
-	import { browser } from '$app/env';
+	import { browser } from '$app/environment';
 	$: isMac = browser && /mac/i.test(navigator.platform);
 </script>
 

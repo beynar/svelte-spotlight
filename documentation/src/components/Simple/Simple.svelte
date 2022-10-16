@@ -1,9 +1,9 @@
 <script lang="ts">
 	import SvelteSpotlight from 'svelte-spotlight/src/lib/SvelteSpotlight.svelte';
 	import { matchSorter } from 'match-sorter';
-	import { browser } from '$app/env';
+	import { browser } from '$app/environment';
 
-	export let isOpen;
+	export let isOpen: boolean;
 	let query = '';
 	let items = [
 		{
@@ -39,8 +39,8 @@
 	{results}
 	bind:query
 	combo={browser && !/mac/i.test(navigator.platform)
-		? { key: 'l', ctrlKey: true }
-		: { key: 'l', metaKey: true }}
+		? { key: 'j', ctrlKey: true }
+		: { key: 'j', metaKey: true }}
 	bind:isOpen
 	modalClass={'w-[600px] max-w-[95%] bg-base-100 shadow-lg overflow-hidden rounded-sm'}
 	headerClass={'py-3 px-10 border-b-2 border-base-300 border-b-solid'}

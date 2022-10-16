@@ -39,8 +39,8 @@ export const isCombo = <T extends Combo>(e: KeyboardEvent, combo: T) => {
 };
 
 type defaultSlotProps<Result> = {
-	selectedResult: Result;
-	preSelectedResult: Result;
+	selectedResult: Result | undefined;
+	preSelectedResult: Result | undefined;
 	noResults: boolean;
 	query: string;
 };

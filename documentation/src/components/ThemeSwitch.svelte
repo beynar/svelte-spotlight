@@ -1,6 +1,6 @@
 <!-- https://daisyui.com/components/swap/ -->
 <script>
-	import themeStore, { setTheme } from 'svelte-themes';
+	import themeStore, { setTheme } from 'svelte-themes/themeStore';
 	$: theme = $themeStore.theme;
 </script>
 

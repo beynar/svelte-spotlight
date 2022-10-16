@@ -7,11 +7,9 @@
 	import Navigation from '../components/Navigation.svelte';
 	let isAlgoliaExampleOpen = false;
 	let isSimpleExampleOpen = false;
-
-	const links = ['Installation', 'Anatomy', 'Props', 'Slots', 'Example'];
 </script>
 
-<SvelteThemes themes={['light', 'dark']} />
+<SvelteThemes />
 <SideMenu bind:isAlgoliaExampleOpen bind:isSimpleExampleOpen />
 <main class="flex w-full relative">
 	<Pokedex bind:isOpen={isAlgoliaExampleOpen} />
