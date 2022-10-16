@@ -1,6 +1,9 @@
 <script lang="ts">
 	import SvelteSpotlight from 'svelte-spotlight/src/lib/SvelteSpotlight.svelte';
-	import algoliasearch from 'algoliasearch/dist/algoliasearch-lite.esm.browser';
+	import type { SearchClient } from 'algoliasearch';
+
+	import type { Hit, IndexHit } from './algoliaType';
+	import algoliasearch from 'algoliasearch';
 	import { onMount } from 'svelte';
 	import PokemonItem from './PokemonItem.svelte';
 	import PokemonGroup from './PokemonGroup.svelte';
@@ -12,15 +15,12 @@
 	import PokemonHeaderCenter from './PokemonHeaderCenter.svelte';
 	import PokemonContent from './PokemonContent.svelte';
 	export let isOpen = false;
-	let preSelectedResult;
-	let selectedResult;
-	let client;
+	let preSelectedResult: Hit | undefined = undefined;
+	let selectedResult: Hit | undefined = undefined;
+	let client: SearchClient;
 
 	let query = '';
-	let results: ({ index: string; hits: { name: string; objectID: string }[] } & Record<
-		string,
-		any
-	>)[] = [];
+	let results: IndexHit[] = [];
 	const indices = [
 		'Generation I',
 		'Generation II',
@@ -34,7 +34,8 @@
 
 	$: {
 		if (client) {
-			client.search(indices.map((indexName) => ({ indexName, query }))).then((data) => {
+			client.search<IndexHit>(indices.map((indexName) => ({ indexName, query }))).then((data) => {
+				// @ts-ignore
 				results = data.results;
 			});
 		}
