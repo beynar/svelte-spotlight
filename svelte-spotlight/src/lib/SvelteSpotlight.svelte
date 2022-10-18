@@ -240,7 +240,7 @@
 			<header bind:clientHeight={headerHeight} class={`sl-header ${headerClass}`}>
 				<slot name="headerLeft" {...defaultProps} />
 
-				{#if headerCenterComponent}
+				{#if contentComponent}
 					<svelte:component this={headerCenterComponent} {...defaultProps} />
 				{:else}
 					<input
