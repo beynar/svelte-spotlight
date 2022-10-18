@@ -1,6 +1,6 @@
 {
 	"name": "svelte-spotlight",
-	"version": "1.0.7",
+	"version": "1.0.9",
 	"scripts": {
 		"dev": "vite dev",
 		"pub": "pnpm run build && cd package && npm publish",
