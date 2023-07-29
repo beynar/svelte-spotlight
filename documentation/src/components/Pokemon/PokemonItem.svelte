@@ -4,7 +4,7 @@
 </script>
 
 <div
-	class={`mt-2 transition-all cursor-pointer  mx-auto flex justify-center  flex-col p-3  bg-base-200  rounded-md w-[94%] hover:scale-[1.01] ${
+	class={`my-2 transition-all cursor-pointer  mx-auto flex justify-center  flex-col p-3  bg-base-200  rounded-md w-[94%] hover:scale-[1.01] ${
 		selected ? 'bg-slate-300 ' : ''
 	} `}
 >

@@ -1,17 +1,17 @@
 <script lang="ts">
+	import { trapFocus } from './trapFocus';
 	import { fade, scale } from 'svelte/transition';
-	import { browser } from '$app/environment';
+	import { BROWSER } from 'esm-env';
 	import {
 		type AnimationFunctions,
 		type AnimationConfig,
-		scrollIntoViewIfNeeded,
 		isCombo,
 		type Slots,
 		type Combo
 	} from './index';
 	import { createEventDispatcher } from 'svelte';
 	import type { ConditionalKeys } from 'type-fest';
-
+	import { portal } from './portal';
 	type OverlayTransition = $$Generic<AnimationFunctions>;
 	type ModalInTransition = $$Generic<AnimationFunctions>;
 	type ModalOutTransition = $$Generic<AnimationFunctions>;
@@ -26,7 +26,7 @@
 		/** Event fired when a result is either clicked or selected with the Enter key. Return the selected item */
 		select: Result;
 		/** Event fired when user hits the keyboard to navigate inside the spotlight. Return the preselected item */
-		navigate: Result;
+		navigate: Result | undefined;
 		/** Event fired when the user is typing inside the search input. Return the query */
 		query: string;
 	}>();
@@ -39,7 +39,7 @@
 
 	/** The keyboard combo that will open the spotlight */
 	export let combo: Combo =
-		browser && !/mac/i.test(navigator.platform)
+		BROWSER && !/mac/i.test(navigator.platform)
 			? { key: 'k', ctrlKey: true }
 			: { key: 'k', metaKey: true };
 
@@ -89,39 +89,39 @@
 	export let isFocused = false;
 	/** The overlay class */
 	export let overlayClass = '';
+	/** The button item class */
+	export let itemClass = '';
 	/** The modal class */
 	export let modalClass = '';
 	/** The modal header class */
 	export let headerClass = '';
 	/** The input class */
-	/** The modal content container class */
 	export let inputClass = '';
+	/** The modal content container class */
 	export let contentClass = '';
 	/** The modal results container class */
 	export let resultsClass = '';
 	/** The modal footer class */
 	export let footerClass = '';
-	/** HTML element type for the the result list */
-	export let listElement = 'ul';
-	/** HTML element type for the result element */
-	export let resultElement = 'li';
 	/** Optional header center component to replace the default input. We don't use a slot here because it's impossible to define a conditional slot, and  you don't want to display this component all the time. It's useful if you want to simulate some sort of navigation inside the spotlight component */
 	export let headerCenterComponent: any = undefined;
 	/** Optional content component to replace the default result list. We don't use a slot here because it's impossible to define a conditional slot, and  you don't want to display this component all the time. It's useful if you want to simulate some sort of navigation inside the spotlight component */
 	export let contentComponent: any = undefined;
+	/** Wether to render the Spotlight outside of its DOM hierarchy and append it to the body of the document*/
+	export let usePortal: boolean = false;
 
 	const toggle = () => (isOpen = !isOpen);
 	const setFocus = () => (isFocused = true);
 	const resetFocus = () => (isFocused = false);
 	const onIntroStart = () => {
 		input?.focus();
-		if (browser) document.body.style.overflow = 'hidden';
-		if (browser) document.body.style.height = '100%';
+		if (BROWSER) document.body.style.overflow = 'hidden';
+		if (BROWSER) document.body.style.height = '100%';
 	};
 	const onOutroEnd = () => {
 		input?.blur();
-		if (browser) document.body.style.overflow = 'auto';
-		if (browser) document.body.style.height = 'unset';
+		if (BROWSER) document.body.style.overflow = 'auto';
+		if (BROWSER) document.body.style.height = 'unset';
 		if (cleanQueryOnClose) {
 			query = '';
 			preSelectedResult = undefined;
@@ -136,43 +136,6 @@
 		} else if (isCombo(e, combo)) {
 			isOpen = true;
 			return e.preventDefault();
-		}
-		if (!noResults && isOpen && content) {
-			const options = Array.from(content.querySelectorAll('li'));
-			const current = options.findIndex(
-				(element) => element.id === preSelectedResult?.[resultIdKey]
-			);
-			const selectResult = (position: number) => {
-				const element = options[position];
-
-				if (groupIdKey) {
-					const group = results.find((group) => {
-						// @ts-ignore
-						return group[groupIdKey] === element?.parentElement?.id;
-					});
-					if (group && groupResultsKey) {
-						preSelectedResult = group[groupResultsKey].find(
-							(result: GroupedResult) => result[resultIdKey] === element.id
-						);
-					}
-				} else {
-					preSelectedResult = results[position];
-				}
-				scrollIntoViewIfNeeded(element, content);
-			};
-
-			if (e.key === 'ArrowDown') {
-				e.preventDefault();
-				selectResult(current === -1 || current === options.length - 1 ? 0 : current + 1);
-			}
-			if (e.key === 'ArrowUp') {
-				e.preventDefault();
-				selectResult(current <= 0 ? options.length - 1 : current - 1);
-			}
-		}
-		if (e.key === 'Enter' && !!preSelectedResult && isOpen) {
-			e.preventDefault();
-			select(preSelectedResult);
 		}
 	};
 
@@ -194,15 +157,16 @@
 		role: 'listbox',
 		'aria-labelledby': 'sv-sl',
 		id,
-		class: 'sl-results-list'
+		class: 'sl-list'
 	});
 	const optionProps = (id: string, selected: boolean) => ({
 		// TODO add some attribute for better a11y
 		'aria-labelledby': 'sv-sl',
+		'aria-role': 'option',
 		role: 'option',
 		'aria-selected': selected,
 		id,
-		class: 'sl-results-item'
+		class: `sl-item ${itemClass}`
 	});
 
 	$: defaultProps = {
@@ -217,113 +181,131 @@
 
 {#key isOpen}
 	{#if isOpen}
-		<div
-			bind:clientHeight
-			on:click={toggle}
-			class={`sl-overlay ${overlayClass}`}
-			transition:overlayTransition={overlayTransitionConfig}
-		/>
-		<div
-			role="combobox"
-			aria-expanded={isOpen}
-			aria-haspopup="listbox"
-			aria-labelledby="sv-sl"
-			aria-owns="sl-content"
-			aria-label="Spotlight"
-			style:top={`${distanceFromTop}px`}
-			class={`sl-modal ${modalClass}`}
-			on:introstart={onIntroStart}
-			on:outroend={onOutroEnd}
-			in:modalTransitionIn={modalTransitionInConfig}
-			out:modalTransitionOut={modalTransitionOutConfig}
-		>
-			<header bind:clientHeight={headerHeight} class={`sl-header ${headerClass}`}>
-				<slot name="headerLeft" {...defaultProps} />
-
-				{#if headerCenterComponent}
-					<svelte:component this={headerCenterComponent} {...defaultProps} />
-				{:else}
-					<input
-						aria-autocomplete="list"
-						aria-labelledby="sv-sl"
-						id="sl-input"
-						autocomplete="off"
-						autocorrect="off"
-						autocapitalize="off"
-						spellcheck="false"
-						on:focus={setFocus}
-						on:blur={resetFocus}
-						type="text"
-						bind:value={query}
-						bind:this={input}
-						role="search"
-						aria-label={searchPlaceholder}
-						aria-controls="sl-content"
-						placeholder={searchPlaceholder}
-						class={`sl-input ${inputClass}`}
-						maxlength={maxLength}
-					/>
-				{/if}
-				<slot name="headerRight" {...defaultProps} />
-			</header>
-			<div class={`sl-content ${contentClass}`}>
-				<div
-					bind:this={content}
-					class={`sl-results ${resultsClass}`}
-					style:max-height={`${maxHeight}px`}
-					{...defaultProps}
-				>
-					{#if contentComponent}
-						<svelte:component this={contentComponent} {...defaultProps} />
+		<div use:portal={usePortal}>
+			<div
+				bind:clientHeight
+				on:pointerdown={toggle}
+				class={`sl-overlay ${overlayClass}`}
+				transition:overlayTransition|global={overlayTransitionConfig}
+			/>
+			<div
+				on:focusin={() => {
+					if (document.activeElement && !document.activeElement.classList.contains('sl-item')) {
+						preSelectedResult = undefined;
+					}
+				}}
+				role="combobox"
+				aria-controls="sl-content"
+				use:trapFocus={results}
+				aria-expanded={isOpen}
+				aria-haspopup="listbox"
+				aria-labelledby="sv-sl"
+				aria-owns="sl-content"
+				aria-label="Spotlight"
+				style:top={`${distanceFromTop}px`}
+				class={`sl-modal ${modalClass}`}
+				on:introstart={onIntroStart}
+				on:outroend={onOutroEnd}
+				in:modalTransitionIn|global={modalTransitionInConfig}
+				out:modalTransitionOut|global={modalTransitionOutConfig}
+			>
+				<header bind:clientHeight={headerHeight} class={`sl-header ${headerClass}`}>
+					<slot name="headerLeft" {...defaultProps} />
+					{#if headerCenterComponent}
+						<svelte:component this={headerCenterComponent} {...defaultProps} />
 					{:else}
-						<slot name="contentTop" {...defaultProps} />
-						{#if query.length === 0 && $$slots.emptySearch}
-							<slot name="emptySearch" {...defaultProps} />
-						{:else if noResults}
-							<slot name="noResults" {...defaultProps} />
-						{:else if !noResults}
-							{#if groupResultsKey && groupIdKey}
-								{#each results as group, groupIndex (group[groupIdKey])}
-									{@const groupedResults = group[groupResultsKey]}
-									{#if groupedResults.length}
-										<slot name="groupHeader" {...defaultProps} {group} {groupIndex} />
-										<svelte:element this={listElement} {...listProps(group[groupIdKey])}>
-											{#each groupedResults as result, index (result[resultIdKey])}
-												{@const selected = preSelectedResult?.[resultIdKey] === result[resultIdKey]}
-												<svelte:element
-													this={resultElement}
-													{...optionProps(result[resultIdKey], selected)}
-													on:click={() => select(result)}
-												>
-													<slot name="result" {...defaultProps} {result} {index} {selected} />
-												</svelte:element>
-											{/each}
-										</svelte:element>
-									{/if}
-								{/each}
-							{:else}
-								<svelte:element this={listElement} {...listProps()}>
-									{#each results as result, index (result[resultIdKey])}
-										{@const selected = preSelectedResult?.[resultIdKey] === result[resultIdKey]}
-										<svelte:element
-											this={resultElement}
-											{...optionProps(result[resultIdKey], selected)}
-											on:click={() => select(result)}
-										>
-											<slot name="result" {...defaultProps} {result} {index} {selected} />
-										</svelte:element>
-									{/each}
-								</svelte:element>
-							{/if}
-						{/if}
-						<slot name="contentBottom" {...defaultProps} />
+						<input
+							aria-autocomplete="list"
+							aria-labelledby="sv-sl"
+							id="sl-input"
+							autocomplete="off"
+							autocorrect="off"
+							autocapitalize="off"
+							spellcheck="false"
+							on:focus={setFocus}
+							on:blur={resetFocus}
+							type="text"
+							bind:value={query}
+							bind:this={input}
+							aria-label={searchPlaceholder}
+							aria-controls="sl-content"
+							placeholder={searchPlaceholder}
+							class={`sl-input ${inputClass}`}
+							maxlength={maxLength}
+						/>
 					{/if}
+					<slot name="headerRight" {...defaultProps} />
+				</header>
+				<div class={`sl-content ${contentClass}`}>
+					<div
+						bind:this={content}
+						class={`sl-results ${resultsClass}`}
+						style:max-height={`${maxHeight}px`}
+						{...defaultProps}
+					>
+						{#if contentComponent}
+							<svelte:component this={contentComponent} {...defaultProps} />
+						{:else}
+							<slot name="contentTop" {...defaultProps} />
+							{#if query.length === 0 && $$slots.emptySearch}
+								<slot name="emptySearch" {...defaultProps} />
+							{:else if noResults}
+								<slot name="noResults" {...defaultProps} />
+							{:else if !noResults}
+								{#if groupResultsKey && groupIdKey}
+									{#each results as group, groupIndex (group[groupIdKey])}
+										{@const groupedResults = group[groupResultsKey]}
+										{#if groupedResults.length}
+											<slot name="groupHeader" {...defaultProps} {group} {groupIndex} />
+											<ul {...listProps(group[groupIdKey])}>
+												{#each groupedResults as result, index (result[resultIdKey])}
+													{@const selected =
+														preSelectedResult?.[resultIdKey] === result[resultIdKey]}
+													<button
+														style:display="list-item"
+														style:text-align="unset"
+														tabindex="0"
+														on:focus={() => {
+															preSelectedResult = result;
+														}}
+														{...optionProps(result[resultIdKey], selected)}
+														on:click={() => select(result)}
+													>
+														<slot name="result" {...defaultProps} {result} {index} {selected} />
+													</button>
+												{/each}
+											</ul>
+										{/if}
+									{/each}
+								{:else}
+									<ul {...listProps()}>
+										{#each results as result, index (result[resultIdKey])}
+											{@const selected = preSelectedResult?.[resultIdKey] === result[resultIdKey]}
+											<button
+												style:display="list-item"
+												style:text-align="unset"
+												tabindex="0"
+												on:focus={() => {
+													preSelectedResult = result;
+												}}
+												{...optionProps(result[resultIdKey], selected)}
+												on:click={() => select(result)}
+											>
+												<slot name="result" {...defaultProps} {result} {index} {selected} />
+											</button>
+										{/each}
+									</ul>
+								{/if}
+							{/if}
+							<slot name="contentBottom" {...defaultProps} />
+						{/if}
+					</div>
+					<slot name="sidePanel" {...defaultProps} {maxHeight} />
 				</div>
-				<slot name="sidePanel" {...defaultProps} {maxHeight} />
+				<footer bind:clientHeight={footerHeight} class={`sl-footer ${footerClass}`}>
+					<slot name="footer" {...defaultProps} />
+				</footer>
 			</div>
-			<footer bind:clientHeight={footerHeight} class={`sl-footer ${footerClass}`}>
-				<slot name="footer" {...defaultProps} />
-			</footer>
 		</div>
 	{/if}
 {/key}

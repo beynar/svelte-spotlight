@@ -1,5 +1,5 @@
 <script lang="ts">
-	import SvelteSpotlight from 'svelte-spotlight/src/lib/SvelteSpotlight.svelte';
+	import SvelteSpotlight from 'svelte-spotlight';
 	import { matchSorter } from 'match-sorter';
 	import { browser } from '$app/environment';
 
@@ -37,6 +37,7 @@
 
 <SvelteSpotlight
 	{results}
+
 	bind:query
 	combo={browser && !/mac/i.test(navigator.platform)
 		? { key: 'j', ctrlKey: true }
@@ -45,6 +46,7 @@
 	modalClass={'w-[600px] max-w-[95%] bg-base-100 shadow-lg overflow-hidden rounded-sm'}
 	headerClass={'py-3 px-10 border-b-2 border-base-300 border-b-solid'}
 	inputClass="focus:outline-none bg-transparent"
+	itemClass="w-full"
 	resultIdKey="title"
 	on:select={(event) => {
 		window.location.hash = event.detail.title.toLowerCase();
@@ -55,7 +57,8 @@
 		slot="result"
 		let:selected
 		let:result
-		class={`hover:bg-base-200  cursor-pointer text-sm px-10 py-3 w-full ${
+
+		class={`hover:bg-base-200 flex-1 cursor-pointer text-sm px-10 py-3 w-full ${
 			selected ? 'bg-base-300' : ''
 		} `}
 	>

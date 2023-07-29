@@ -1,5 +1,5 @@
 <script lang="ts">
-	import SvelteSpotlight from 'svelte-spotlight/src/lib/SvelteSpotlight.svelte';
+	import SvelteSpotlight from 'svelte-spotlight';
 	import type { SearchClient } from 'algoliasearch';
 
 	import type { Hit, IndexHit } from './algoliaType';
@@ -45,6 +45,7 @@
 </script>
 
 <SvelteSpotlight
+	usePortal={true}
 	{results}
 	bind:query
 	bind:isOpen

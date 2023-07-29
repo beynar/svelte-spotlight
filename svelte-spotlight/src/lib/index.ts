@@ -21,14 +21,6 @@ export type Slide = typeof slide;
 export type AnimationFunctions = Fade | Fly | Scale | Blur | Slide;
 export type AnimationConfig<T extends AnimationFunctions> = Parameters<T>[1];
 export type AnimatingParams = FadeParams & ScaleParams & CrossfadeParams & SlideParams & BlurParams;
-export const scrollIntoViewIfNeeded = (target: HTMLLIElement, container: HTMLDivElement) => {
-	const top = target.offsetTop - container.offsetTop;
-	if (
-		top + target.offsetTop / 2 > container.scrollTop + container.clientHeight ||
-		top < container.scrollTop
-	)
-		target.scrollIntoView({ block: 'center', inline: 'center' });
-};
 
 export const isCombo = <T extends Combo>(e: KeyboardEvent, combo: T) => {
 	if (typeof combo === 'boolean') {

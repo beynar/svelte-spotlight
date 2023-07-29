@@ -4,7 +4,6 @@
 	import Example from '../components/Examples/Examples.svelte';
 	import Slots from '../components/Slots/Slots.svelte';
 
-	// export const prerender = true;
 	const copy = (e) => {
 		const text = e.target.getAttribute('aria-label');
 		navigator.clipboard.writeText(text).then(() => {
